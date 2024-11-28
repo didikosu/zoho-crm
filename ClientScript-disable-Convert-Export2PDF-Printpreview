@@ -1,0 +1,24 @@
+#Disable Convert, Export to PDF and Print Preview if Application status is not "Approved"
+
+console.clear();
+console.log("start cs. ");
+var as = ZDK.Page.getField('Approval_Status').getValue();
+
+var r = ZDK.Page.getButtons();
+console.log("r. ", r);
+for (i = 0; i < r.length; i++)
+{
+    console.log("tes ", r[i].getApiName());
+}
+if (as == "Approved")
+{
+    var b1 = ZDK.Page.getButton('print_preview').enable();
+    var b2 = ZDK.Page.getButton('export_to_pdf').enable();
+    var b3 = ZDK.Page.getButton('convert').enable();
+}
+else
+{
+    var b1 = ZDK.Page.getButton('print_preview').disable();
+    var b2 = ZDK.Page.getButton('export_to_pdf').disable();
+    var b3 = ZDK.Page.getButton('convert').disable();
+}
