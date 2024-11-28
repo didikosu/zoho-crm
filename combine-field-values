@@ -1,0 +1,47 @@
+#update fields with values from other fields combined
+
+resp = zoho.crm.getRecordById("Vehicles", recid);
+y1 = ifnull(resp.get("Year1"),"");
+make = ifnull(resp.get("Make_New"),"");
+model = ifnull(resp.get("Model_New"),"");
+reg = y1 + " "+ make + " " + model;
+
+type = ifnull(resp.get("Body_type"),"");
+door = ifnull(resp.get("Doors"),"");
+style = "";
+if(door != "")
+{
+style = type + " " + door + " -Door";
+}
+
+tr = ifnull(resp.get("Trim_Level"),"");
+bs = ifnull(resp.get("Body_Style"),"");
+trim = tr + " "+ bs;
+
+ec = ifnull(resp.get("Engine_Configuration"),"");
+cyc = ifnull(resp.get("Cylinders"),"").toString();
+c = ec.subText(0,1);
+engineModel = c+cyc;
+
+
+dispL = ifnull(resp.get("Displacement_L"),"");
+dispCC = ifnull(resp.get("Displacement_in_CC"),"");
+engineModel = ifnull(resp.get("Engine_Model"),"");
+fuel = ifnull(resp.get("Fuel1"),"");
+valve = ifnull(resp.get("Valve_Train"),"");
+asp = ifnull(resp.get("Engine_Aspiration"),"");
+engineCode = ifnull(resp.get("Engine_Code"),"").remove("-");
+
+enginee = dispL + " " + dispCC + " " + engineModel + " "+ fuel.upper() + " " + valve + " "+ asp + " " + engineCode;
+e1 = dispL + " " + fuel + " " +  engineModel + engineCode;
+
+mp = map();
+mp.put("Registration", reg);
+mp.put("Body_Style", style);
+mp.put("Trim", trim);
+mp.put("Engine_Model", engineModel);
+mp.put("Enginee", enginee);
+mp.put("Engine1", e1);
+info "Map : "+mp;
+upd = zoho.crm.updateRecord("Vehicles", recid, mp);
+info upd;
